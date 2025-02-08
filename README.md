@@ -1,6 +1,6 @@
 # Markdown Mirror (llms.txt) WordPress Plugin
 
-**Version:** 1.0.0  
+**Version:** 0.1.0  
 **Author:** Ossian Ravn Engmark (hello@ossianravn.dev)
 **License:** GPL v2 or later  
 **Requires WordPress:** 5.0+  
@@ -296,8 +296,9 @@ This will install the HTML-to-Markdown library and any other required packages. 
 
 ## 13. Changelog
 
-### 1.0.0
-- Initial release with dynamic Markdown conversion and context file generation
+### 0.1.0 (Beta)
+- Initial beta release with core functionality
+- Dynamic Markdown conversion and context file generation
 - Added support for three context file types: llms.txt, llms-ctx.txt, and llms-ctx-full.txt
 - Implemented category and tag support in context files
 - Added per-post control via meta boxes
