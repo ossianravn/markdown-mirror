@@ -154,4 +154,53 @@ class SEO {
             'X-Robots-Tag' => 'index, follow', // Always index llms.txt
         ];
     }
+
+    /**
+     * Get headers for taxonomy archive Markdown pages
+     *
+     * @param WP_Term $term The taxonomy term
+     * @return array Headers to set
+     */
+    public static function get_taxonomy_markdown_headers($term) {
+        $headers = [
+            'Content-Type' => 'text/markdown; charset=' . get_option('blog_charset'),
+            'X-Robots-Tag' => 'noindex, follow'
+        ];
+        
+        // Get the HTML URL for this term
+        $html_url = get_term_link($term);
+        
+        // Add canonical link to the HTML version
+        $headers['Link'] = '<' . esc_url($html_url) . '>; rel="canonical"';
+        
+        // Add alternate link to self
+        $md_url = home_url($term->taxonomy . '/' . $term->slug . '.md');
+        $headers['Link'] .= ', <' . esc_url($md_url) . '>; rel="alternate"; type="text/markdown"';
+        
+        return $headers;
+    }
+
+    /**
+     * Add alternate link to HTML pages
+     */
+    public static function add_alternate_link() {
+        // Check if this is a taxonomy term archive
+        if (is_tax() || is_category() || is_tag()) {
+            $term = get_queried_object();
+            if ($term && isset($term->taxonomy) && isset($term->slug)) {
+                $enabled_types = get_option('md_mirror_post_types', ['post', 'page']);
+                if (in_array('tax_' . $term->taxonomy, $enabled_types)) {
+                    $md_url = home_url($term->taxonomy . '/' . $term->slug . '.md');
+                    echo '<link rel="alternate" type="text/markdown" href="' . esc_url($md_url) . '" />' . "\n";
+                }
+            }
+        }
+        
+        // Existing post/page handling
+        global $post;
+        if ($post && md_mirror_is_post_included($post)) {
+            $md_url = home_url(get_post_field('post_name', $post) . '.md');
+            echo '<link rel="alternate" type="text/markdown" href="' . esc_url($md_url) . '" />' . "\n";
+        }
+    }
 } 

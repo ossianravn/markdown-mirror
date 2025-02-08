@@ -32,6 +32,8 @@ class Rewrite {
         $vars[] = 'md_mirror_path';
         $vars[] = 'md_mirror_ctx';
         $vars[] = 'md_mirror_ctx_full';
+        $vars[] = 'md_mirror_taxonomy';
+        $vars[] = 'md_mirror_term';
         return $vars;
     }
 
@@ -43,7 +45,20 @@ class Rewrite {
         add_rewrite_rule('^llms\.txt$', 'index.php?md_mirror_llms=1', 'top');
         add_rewrite_rule('^llms-ctx\.txt$', 'index.php?md_mirror_ctx=1', 'top');
         add_rewrite_rule('^llms-ctx-full\.txt$', 'index.php?md_mirror_ctx_full=1', 'top');
+        
+        // Post/page URLs
         add_rewrite_rule('^([^/]+)\.md$', 'index.php?md_mirror_markdown=1&md_mirror_path=$matches[1]', 'top');
+        
+        // Taxonomy archive URLs
+        $taxonomies = get_taxonomies(['public' => true], 'names');
+        foreach ($taxonomies as $taxonomy) {
+            // Single term archives
+            add_rewrite_rule(
+                "^{$taxonomy}/([^/]+)\.md$",
+                "index.php?md_mirror_markdown=1&md_mirror_taxonomy={$taxonomy}&md_mirror_term=\$matches[1]",
+                'top'
+            );
+        }
         
         // Prevent trailing slash redirects for our endpoints
         add_filter('redirect_canonical', function($redirect_url, $requested_url) {
@@ -171,12 +186,46 @@ class Rewrite {
     }
 
     /**
-     * Serve the Markdown version of a post/page
+     * Serve the Markdown version of a post/page or taxonomy archive
      *
      * @param string $path The requested path
      */
     private static function serve_markdown($path) {
-        // Try to find the post by path
+        global $wp_query;
+        
+        // Check if this is a taxonomy archive request
+        $taxonomy = get_query_var('md_mirror_taxonomy');
+        $term_slug = get_query_var('md_mirror_term');
+        
+        if ($taxonomy && $term_slug) {
+            // Check if taxonomy archives are enabled
+            $enabled_types = get_option('md_mirror_post_types', ['post', 'page']);
+            if (!in_array('tax_' . $taxonomy, $enabled_types)) {
+                status_header(404);
+                echo "# 404 Not Found\n\nThis taxonomy archive is not available in Markdown format.";
+                exit;
+            }
+            
+            $term = get_term_by('slug', $term_slug, $taxonomy);
+            if (!$term) {
+                status_header(404);
+                echo "# 404 Not Found\n\nThe requested taxonomy term could not be found.";
+                exit;
+            }
+            
+            // Generate Markdown for taxonomy archive
+            $markdown = self::generate_taxonomy_archive_markdown($term);
+            
+            // Set SEO headers
+            foreach (SEO::get_taxonomy_markdown_headers($term) as $header => $value) {
+                header("$header: $value");
+            }
+            
+            echo $markdown;
+            return;
+        }
+        
+        // Regular post/page handling
         $url = home_url($path);
         $post_id = url_to_postid($url);
         
@@ -210,6 +259,62 @@ class Rewrite {
         }
         
         echo $markdown;
+    }
+
+    /**
+     * Generate Markdown content for a taxonomy archive
+     *
+     * @param WP_Term $term The taxonomy term
+     * @return string The generated Markdown
+     */
+    private static function generate_taxonomy_archive_markdown($term) {
+        $cache_key = 'md_mirror_tax_' . $term->taxonomy . '_' . $term->term_id;
+        $cached_content = wp_cache_get($cache_key, Cache::CACHE_GROUP);
+        
+        if ($cached_content !== false) {
+            return $cached_content;
+        }
+        
+        // Build the Markdown content
+        $content = "# {$term->name}\n\n";
+        
+        if (!empty($term->description)) {
+            $content .= "{$term->description}\n\n";
+        }
+        
+        // Get posts in this term
+        $posts = get_posts([
+            'post_type' => 'any',
+            'tax_query' => [
+                [
+                    'taxonomy' => $term->taxonomy,
+                    'field' => 'term_id',
+                    'terms' => $term->term_id,
+                ]
+            ],
+            'posts_per_page' => -1,
+            'orderby' => 'date',
+            'order' => 'DESC'
+        ]);
+        
+        foreach ($posts as $post) {
+            if (md_mirror_is_post_included($post)) {
+                $md_url = home_url(get_post_field('post_name', $post) . '.md');
+                $content .= "## [{$post->post_title}]({$md_url})\n\n";
+                
+                $excerpt = get_the_excerpt($post);
+                if (!empty($excerpt)) {
+                    $content .= "{$excerpt}\n\n";
+                }
+                
+                $content .= "---\n\n";
+            }
+        }
+        
+        // Cache the content
+        wp_cache_set($cache_key, $content, Cache::CACHE_GROUP, Cache::CACHE_EXPIRATION);
+        
+        return $content;
     }
 
     /**

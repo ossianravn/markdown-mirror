@@ -172,6 +172,8 @@ class Settings {
         $post_types = get_post_types(['public' => true], 'objects');
         $selected = get_option('md_mirror_post_types', ['post', 'page']);
         
+        // Add taxonomies as content types
+        echo '<h4>Content Types</h4>';
         foreach ($post_types as $post_type) {
             ?>
             <label>
@@ -182,6 +184,20 @@ class Settings {
             </label><br>
             <?php
         }
+
+        echo '<h4>Taxonomy Archives</h4>';
+        $taxonomies = get_taxonomies(['public' => true], 'objects');
+        foreach ($taxonomies as $taxonomy) {
+            ?>
+            <label>
+                <input type="checkbox" name="md_mirror_post_types[]" 
+                       value="tax_<?php echo esc_attr($taxonomy->name); ?>"
+                       <?php checked(in_array('tax_' . $taxonomy->name, $selected)); ?>>
+                <?php echo esc_html($taxonomy->label); ?> Archives
+            </label><br>
+            <?php
+        }
+        echo '<p class="description">Select which content types and taxonomy archives should be available as Markdown.</p>';
     }
 
     /**
