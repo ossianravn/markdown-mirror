@@ -62,14 +62,6 @@ Key benefits include:
 - **Test Suite:** Run diagnostic tests (available in WP_DEBUG mode) to verify rewrite rules, conversion accuracy, caching, and SEO headers.
 - **Custom Autoloader & Composer Support:** Leverages a custom PSR-4 autoloader along with Composer for dependency management.
 
-### Planned Features
-
-- **Extended Context Files:** Generate expanded versions of llms.txt:
-  - `llms-ctx.txt`: Core content without optional URLs
-  - `llms-ctx-full.txt`: Complete content including all referenced URLs
-- **Customizable Context Generation:** Admin settings to control what content gets included in the expanded context files
-- **Automated Context Updates:** Keep expanded context files in sync with your content through the caching system
-
 ---
 
 ## 3. Installation & Requirements
