@@ -50,12 +50,12 @@ Key benefits include:
 
 ## 2. Key Features
 
-- **Dynamic Conversion:** Serve your posts and pages as Markdown files via custom rewrite rules.
+- **Dynamic Conversion:** Serve your posts, pages, and taxonomy archives as Markdown files via custom rewrite rules.
 - **Automatic Context Generation:** Generate three levels of content discovery:
   - `llms.txt`: Basic content listing with excerpts
   - `llms-ctx.txt`: Core content without optional URLs
   - `llms-ctx-full.txt`: Complete content including all referenced URLs
-- **Taxonomy Support:** Include categories and tags in context files for better content organization
+- **Taxonomy Support:** Include categories and tags in context files for better content organization, with optional Markdown versions of taxonomy archive pages
 - **Admin Settings & Meta Boxes:** Easily select which post types to mirror and manage per-post inclusion.
 - **Caching System:** Automatically caches converted Markdown and context files to improve performance.
 - **SEO Enhancements:** Adds canonical links, alternate links, and X-Robots-Tag headers for proper content discovery and SEO optimization.
@@ -112,15 +112,17 @@ Key benefits include:
 Once activated, the plugin automatically:
 
 - **Serves Markdown Versions:**  
-  Your posts and pages are available as Markdown files at URLs like:  
-  `https://your-site.com/your-post.md`
+  Your content is available as Markdown files at URLs like:  
+  - Posts/Pages: `https://your-site.com/your-post.md`
+  - Categories: `https://your-site.com/category/your-category.md`
+  - Tags: `https://your-site.com/tag/your-tag.md`
 
 - **Generates `llms.txt`:**  
   A Markdown-formatted `llms.txt` file is available at:  
   `https://your-site.com/llms.txt`
 
 - **Admin Controls:**  
-  - **Global Settings:** Configure the post types, custom summary, and SEO options.
+  - **Global Settings:** Configure which post types and taxonomy archives to include, custom summary, and SEO options.
   - **Per-Post Controls:** Use the meta box on the post edit screen to include or exclude specific posts.
 
 - **Testing:**  
@@ -134,8 +136,12 @@ Access the **Markdown Mirror** settings under **Settings → Markdown Mirror** i
 
 ### General Settings
 
-- **Include Post Types:**  
-  Select which post types (Posts, Pages, custom types, etc.) should be mirrored.
+- **Include Content Types:**  
+  Select which content to make available as Markdown:
+  - Post types (Posts, Pages, custom types, etc.)
+  - Category archives
+  - Tag archives
+  - Custom taxonomy archives
   
 - **Include Categories & Tags:**  
   Toggle inclusion of taxonomy information in context files.
@@ -186,7 +192,7 @@ By default, all posts are included unless explicitly excluded.
 The basic context file (`llms-ctx.txt`) provides a clean, URL-free version of your content organized by:
 - Categories with descriptions and associated posts
 - Tags with descriptions and associated posts
-- Chronological listing of all posts
+- Chronological listing of all posts and taxonomy archives
 - Configurable content inclusion (titles, excerpts, meta descriptions)
 
 ### Full Context (llms-ctx-full.txt)
@@ -194,12 +200,14 @@ The basic context file (`llms-ctx.txt`) provides a clean, URL-free version of yo
 The full context file (`llms-ctx-full.txt`) includes:
 - Everything from the basic context
 - Complete post content in Markdown format
+- Taxonomy archive content when enabled
 - Nested content from referenced internal links
 - Configurable link depth for content expansion
 - Full taxonomy relationships
 
 Both context files can be customized through the admin settings to control:
 - Which content elements to include
+- Which taxonomy archives to include
 - How deep to follow internal links
 - Whether to include taxonomy information
 - Cache duration for optimal performance
@@ -271,6 +279,9 @@ Each test reports a Pass/Fail status with details for troubleshooting.
 
 **Q5: How do I exclude a specific post?**  
 - **A:** Use the meta box on the post editor screen to mark a post as excluded from the Markdown mirror.
+
+**Q6: Can I create Markdown versions of my category and tag pages?**  
+- **A:** Yes! Go to **Settings → Markdown Mirror** and under "Include Content Types", check the boxes for "Category Archives" and "Tag Archives". Your taxonomy archives will then be available at URLs like `https://your-site.com/category/your-category.md`.
 
 ---
 
