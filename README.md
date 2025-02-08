@@ -63,8 +63,9 @@ Key benefits include:
 
 ### User Installation
 
-1. **Upload Plugin Files:**  
-   Upload the entire `markdown-mirror` folder to your `/wp-content/plugins/` directory.
+1. **Download & Upload:**
+   - Option 1: Download the [latest release zip file](https://github.com/ossianravn/markdown-mirror/raw/main/dist/markdown-mirror-1.0.0.zip) directly
+   - Option 2: Upload the entire `markdown-mirror` folder to your `/wp-content/plugins/` directory manually
 
 2. **Activate the Plugin:**  
    In the WordPress admin, navigate to **Plugins > Installed Plugins** and activate **Markdown Mirror (llms.txt)**.
