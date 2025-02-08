@@ -299,12 +299,15 @@ This will install the HTML-to-Markdown library and any other required packages. 
 
 ## 13. Changelog
 
-### 0.2.0
+### 0.2.0 (Current)
 - Added support for Markdown versions of taxonomy archive pages
 - Added category and tag archives as optional content types in settings
 - Implemented Markdown generation for taxonomy archives
 - Added SEO headers and alternate links for taxonomy pages
 - Updated rewrite rules to handle taxonomy URLs
+- Added customizable context generation through admin settings
+- Implemented expanded context files (llms-ctx.txt and llms-ctx-full.txt)
+- Added automated context updates through caching system
 
 ### 0.1.0 (Beta)
 - Initial beta release with core functionality
