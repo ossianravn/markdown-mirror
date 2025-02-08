@@ -16,12 +16,12 @@
 4. [Basic Usage](#basic-usage)  
 5. [Admin Settings](#admin-settings)  
    - [General Settings](#general-settings)  
-   - [SEO Settings](#seo-settings)  
+   - [Context Files Settings](#context-files-settings)  
    - [Cache Settings](#cache-settings)  
 6. [Per-Post Controls](#per-post-controls)  
-7. [Markdown & llms.txt Generation](#markdown--llmstxt-generation)  
-   - [How `.md` URLs Are Served](#how-md-urls-are-served)  
-   - [How `llms.txt` Is Generated](#how-llmstxt-is-generated)  
+7. [Context Files](#context-files)  
+   - [Basic Context (llms-ctx.txt)](#basic-context)  
+   - [Full Context (llms-ctx-full.txt)](#full-context)  
 8. [Caching System](#caching-system)  
 9. [SEO Handling & Noindex](#seo-handling--noindex)  
 10. [Testing & Debug Tools](#testing--debug-tools)  
@@ -40,8 +40,9 @@ The **Markdown Mirror (llms.txt)** plugin dynamically converts your WordPress po
 Key benefits include:
 - **Dynamic Markdown Conversion:** Converts posts/pages to Markdown (using the [League HTML-to-Markdown](https://github.com/thephpleague/html-to-markdown) library) when requested.
 - **AI-Friendly Index:** Creates an `llms.txt` file that aggregates your content in a clean, Markdown-formatted list.
+- **Extended Context Files:** Generates `llms-ctx.txt` and `llms-ctx-full.txt` for enhanced content discovery and relationships.
 - **SEO-Friendly:** Adds canonical links and SEO headers without disallowing `.md` URLs in `robots.txt`—ensuring both search engines and AI crawlers can access your content appropriately.
-- **Efficient Caching:** Speeds up repeated requests by caching both individual Markdown conversions and the global `llms.txt` content.
+- **Efficient Caching:** Speeds up repeated requests by caching both individual Markdown conversions and the global context files.
 - **Per-Post Control:** Allows you to include or exclude specific posts from the Markdown mirror via a simple meta box.
 - **Robust Admin Interface:** Provides detailed settings and built-in tests to ensure proper functionality.
 
@@ -50,9 +51,13 @@ Key benefits include:
 ## 2. Key Features
 
 - **Dynamic Conversion:** Serve your posts and pages as Markdown files via custom rewrite rules.
-- **Automatic `llms.txt` Generation:** Generate an "AI sitemap" at `llms.txt` that lists your included content.
+- **Automatic Context Generation:** Generate three levels of content discovery:
+  - `llms.txt`: Basic content listing with excerpts
+  - `llms-ctx.txt`: Core content without optional URLs
+  - `llms-ctx-full.txt`: Complete content including all referenced URLs
+- **Taxonomy Support:** Include categories and tags in context files for better content organization
 - **Admin Settings & Meta Boxes:** Easily select which post types to mirror and manage per-post inclusion.
-- **Caching System:** Automatically caches converted Markdown and the `llms.txt` output to improve performance.
+- **Caching System:** Automatically caches converted Markdown and context files to improve performance.
 - **SEO Enhancements:** Adds canonical links, alternate links, and X-Robots-Tag headers for proper content discovery and SEO optimization.
 - **Test Suite:** Run diagnostic tests (available in WP_DEBUG mode) to verify rewrite rules, conversion accuracy, caching, and SEO headers.
 - **Custom Autoloader & Composer Support:** Leverages a custom PSR-4 autoloader along with Composer for dependency management.
@@ -140,19 +145,27 @@ Access the **Markdown Mirror** settings under **Settings → Markdown Mirror** i
 - **Include Post Types:**  
   Select which post types (Posts, Pages, custom types, etc.) should be mirrored.
   
-- **Custom llms.txt Summary:**  
-  Enter a custom summary to appear at the top of the `llms.txt` file. If left blank, your site tagline is used.
+- **Include Categories & Tags:**  
+  Toggle inclusion of taxonomy information in context files.
+  
+- **Custom Summary:**  
+  Enter a custom summary to appear at the top of the context files. If left blank, your site tagline is used.
 
-### SEO Settings
+### Context Files Settings
 
-- **NoIndex Markdown URLs:**  
-  Choose whether to send a `noindex` header for `.md` pages to prevent them from competing with your main HTML pages.  
-  *(Note: Although `.md` pages receive an X-Robots-Tag noindex header when enabled, the `robots.txt` is no longer configured to disallow `.md` URLs.)*
+- **Basic Context Inclusion:**  
+  Choose what content to include in `llms-ctx.txt`:
+  - Post titles
+  - Meta descriptions
+  - Excerpts
+  - Full content
+- **Full Context Depth:**  
+  Set how many levels deep to follow internal links in `llms-ctx-full.txt`
 
 ### Cache Settings
 
 - **Cache Duration:**  
-  Set how long to cache the converted Markdown content and `llms.txt` file (e.g., 1 hour, 1 day, or 1 week) to improve performance.
+  Set how long to cache the converted Markdown content and context files (e.g., 1 hour, 1 day, or 1 week) to improve performance.
 
 ---
 
@@ -174,31 +187,30 @@ By default, all posts are included unless explicitly excluded.
 
 ---
 
-## 7. Markdown & llms.txt Generation
+## 7. Context Files
 
-### How `.md` URLs Are Served
+### Basic Context (llms-ctx.txt)
 
-- **Rewrite Rules:**  
-  The plugin adds rewrite rules that capture requests ending in `.md`.
-  
-- **Dynamic Conversion:**  
-  When a `.md` URL is requested, the plugin converts the corresponding post's HTML to Markdown using the League HTML-to-Markdown library.  
-- **Caching:**  
-  The converted Markdown is cached to speed up subsequent requests.
+The basic context file (`llms-ctx.txt`) provides a clean, URL-free version of your content organized by:
+- Categories with descriptions and associated posts
+- Tags with descriptions and associated posts
+- Chronological listing of all posts
+- Configurable content inclusion (titles, excerpts, meta descriptions)
 
-### How `llms.txt` Is Generated
+### Full Context (llms-ctx-full.txt)
 
-- **Aggregation:**  
-  When you visit `llms.txt`, the plugin:
-  1. Retrieves the site name and a custom summary (or WP's tagline).
-  2. Lists all included posts/pages with headings that link to their `.md` URLs.
-  3. Optionally includes meta descriptions or excerpts.
-  
-- **Formatting:**  
-  Each entry is separated by a horizontal rule (`---`) for clarity.
-  
-- **Caching:**  
-  The generated `llms.txt` is cached and automatically updated when content or settings change.
+The full context file (`llms-ctx-full.txt`) includes:
+- Everything from the basic context
+- Complete post content in Markdown format
+- Nested content from referenced internal links
+- Configurable link depth for content expansion
+- Full taxonomy relationships
+
+Both context files can be customized through the admin settings to control:
+- Which content elements to include
+- How deep to follow internal links
+- Whether to include taxonomy information
+- Cache duration for optimal performance
 
 ---
 
@@ -207,6 +219,7 @@ By default, all posts are included unless explicitly excluded.
 The plugin caches:
 - **Per-Post Markdown Content:** To prevent repeated conversions.
 - **Global `llms.txt` Content:** To minimize processing on each request.
+- **Context Files:** To speed up repeated requests and improve content organization.
 
 **Cache Invalidation Triggers:**
 - Creating, updating, or deleting a post.
@@ -284,11 +297,14 @@ This will install the HTML-to-Markdown library and any other required packages. 
 ## 13. Changelog
 
 ### 1.0.0
-- Initial release with dynamic Markdown conversion and `llms.txt` generation.
-- Added per-post control via meta boxes.
-- Implemented caching, SEO enhancements, and rewrite rules.
-- Included a comprehensive test suite for verifying core functionalities.
-- **Note:** The disallow rule for `.md` files in `robots.txt` has been removed.
+- Initial release with dynamic Markdown conversion and context file generation
+- Added support for three context file types: llms.txt, llms-ctx.txt, and llms-ctx-full.txt
+- Implemented category and tag support in context files
+- Added per-post control via meta boxes
+- Implemented caching, SEO enhancements, and rewrite rules
+- Included a comprehensive test suite for verifying core functionalities
+- Added admin settings for controlling context file content and behavior
+- **Note:** The disallow rule for `.md` files in `robots.txt` has been removed
 
 ---
 

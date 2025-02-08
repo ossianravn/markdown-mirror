@@ -106,13 +106,13 @@ handle_git() {
     if ! git rev-parse --git-dir > /dev/null 2>&1; then
         echo "Error: Not in a git repository"
         exit 1
-    }
+    fi
 
     # Check for uncommitted changes
     if ! git diff-index --quiet HEAD --; then
         echo "Error: You have uncommitted changes. Please commit or stash them first."
         exit 1
-    }
+    fi
 
     # Commit version bump and changelog
     git add markdown-mirror.php README.md "$CHANGELOG_FILE" "$RELEASE_NOTES_FILE"
@@ -139,7 +139,7 @@ handle_svn() {
     if [ -z "$SVN_USERNAME" ] || [ -z "$SVN_PASSWORD" ]; then
         echo "Error: SVN_USERNAME and SVN_PASSWORD environment variables must be set"
         exit 1
-    }
+    fi
 
     # Clean up SVN directory if it exists
     rm -rf "$SVN_DIR"
