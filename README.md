@@ -322,7 +322,7 @@ This will install the HTML-to-Markdown library and any other required packages. 
 ## 14. Contributing & Support
 
 ### Reporting Issues
-- Use the [GitHub issue tracker](https://github.com/[your-username]/markdown-mirror/issues) to report bugs
+- Use the [GitHub issue tracker](https://github.com/ossianravn/markdown-mirror/issues) to report bugs
 - Include as much detail as possible using the provided issue templates
 - Follow the bug report template for bugs and feature request template for new features
 
