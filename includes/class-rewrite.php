@@ -30,6 +30,8 @@ class Rewrite {
         $vars[] = 'md_mirror_llms';
         $vars[] = 'md_mirror_markdown';
         $vars[] = 'md_mirror_path';
+        $vars[] = 'md_mirror_ctx';
+        $vars[] = 'md_mirror_ctx_full';
         return $vars;
     }
 
@@ -39,6 +41,8 @@ class Rewrite {
     public static function add_rewrite_rules() {
         error_log('Markdown Mirror: Adding rewrite rules');
         add_rewrite_rule('^llms\.txt$', 'index.php?md_mirror_llms=1', 'top');
+        add_rewrite_rule('^llms-ctx\.txt$', 'index.php?md_mirror_ctx=1', 'top');
+        add_rewrite_rule('^llms-ctx-full\.txt$', 'index.php?md_mirror_ctx_full=1', 'top');
         add_rewrite_rule('^([^/]+)\.md$', 'index.php?md_mirror_markdown=1&md_mirror_path=$matches[1]', 'top');
         
         // Prevent trailing slash redirects for our endpoints
@@ -73,6 +77,20 @@ class Rewrite {
         if (get_query_var('md_mirror_llms')) {
             error_log('Markdown Mirror: Serving llms.txt');
             self::serve_llms_txt();
+            exit;
+        }
+
+        // Check for llms-ctx.txt
+        if (get_query_var('md_mirror_ctx')) {
+            error_log('Markdown Mirror: Serving llms-ctx.txt');
+            self::serve_ctx_txt();
+            exit;
+        }
+
+        // Check for llms-ctx-full.txt
+        if (get_query_var('md_mirror_ctx_full')) {
+            error_log('Markdown Mirror: Serving llms-ctx-full.txt');
+            self::serve_ctx_full_txt();
             exit;
         }
 
@@ -192,5 +210,31 @@ class Rewrite {
         }
         
         echo $markdown;
+    }
+
+    /**
+     * Serve the llms-ctx.txt content
+     */
+    private static function serve_ctx_txt() {
+        // Set SEO headers
+        foreach (SEO::get_llms_headers() as $header => $value) {
+            header("$header: $value");
+        }
+        
+        $context_generator = new Context_Generator();
+        echo $context_generator->generate_basic_context();
+    }
+
+    /**
+     * Serve the llms-ctx-full.txt content
+     */
+    private static function serve_ctx_full_txt() {
+        // Set SEO headers
+        foreach (SEO::get_llms_headers() as $header => $value) {
+            header("$header: $value");
+        }
+        
+        $context_generator = new Context_Generator();
+        echo $context_generator->generate_full_context();
     }
 } 
