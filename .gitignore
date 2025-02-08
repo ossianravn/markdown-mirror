@@ -1,0 +1,49 @@
+# Build directories
+/build/
+/dist/
+
+# Composer
+/vendor/
+composer.lock
+
+# Development
+*.log
+.DS_Store
+Thumbs.db
+*.map
+*.test.php
+*.spec.php
+phpunit.*
+.phpunit.result.cache
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# WordPress
+*.sql
+*.sql.gz
+wp-config.php
+/wp-content/uploads/
+/wp-content/upgrade/
+.htaccess
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Operating System
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+desktop.ini 

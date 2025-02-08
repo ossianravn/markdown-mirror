@@ -1,0 +1,145 @@
+/* Markdown Mirror Admin Styles */
+
+.markdown-mirror-wrap {
+    max-width: 1200px;
+    margin: 20px 0;
+}
+
+.markdown-mirror-wrap .form-table {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.markdown-mirror-wrap .form-table th {
+    width: 200px;
+    padding: 20px;
+}
+
+.markdown-mirror-wrap .form-table td {
+    padding: 20px;
+}
+
+.markdown-mirror-wrap .description {
+    margin-top: 8px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Post type checkboxes */
+.markdown-mirror-wrap label {
+    margin-bottom: 8px;
+    display: block;
+}
+
+.markdown-mirror-wrap label input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Custom summary textarea */
+.markdown-mirror-wrap textarea {
+    min-height: 100px;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Quick links section */
+.markdown-mirror-wrap .quick-links {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.markdown-mirror-wrap .quick-links h2 {
+    margin-top: 0;
+}
+
+.markdown-mirror-wrap .quick-links .button {
+    margin-right: 10px;
+}
+
+/* Status section */
+.markdown-mirror-wrap .status-info {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.markdown-mirror-wrap .status-info h2 {
+    margin-top: 0;
+}
+
+/* Status indicators */
+.markdown-mirror-wrap .status-indicator {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.markdown-mirror-wrap .status-enabled {
+    background: #dff0d8;
+    color: #3c763d;
+}
+
+.markdown-mirror-wrap .status-disabled {
+    background: #f2dede;
+    color: #a94442;
+}
+
+/* Section headers */
+.markdown-mirror-wrap h2 {
+    font-size: 1.4em;
+    margin: 1.5em 0 1em;
+}
+
+/* Form elements */
+.markdown-mirror-wrap select {
+    min-width: 200px;
+}
+
+.markdown-mirror-wrap .submit {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ccd0d4;
+}
+
+/* Meta Box Styles */
+#md_mirror_meta_box .inside {
+    margin: 0;
+    padding: 10px;
+}
+
+#md_mirror_meta_box label {
+    display: block;
+    margin: 5px 0;
+}
+
+#md_mirror_meta_box input[type="radio"] {
+    margin-right: 8px;
+}
+
+#md_mirror_meta_box .description {
+    margin: 10px 0;
+    color: #666;
+}
+
+.md-mirror-preview {
+    display: block;
+    margin-top: 5px;
+    word-break: break-all;
+    font-size: 12px;
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.md-mirror-preview:hover {
+    color: #00a0d2;
+} 

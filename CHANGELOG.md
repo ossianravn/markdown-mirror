@@ -1,0 +1,25 @@
+# Changelog
+
+All notable changes to the Markdown Mirror plugin will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] - 2024-03-20
+
+### Added
+- Initial release with dynamic Markdown conversion
+- Automatic `llms.txt` generation
+- Per-post control via meta boxes
+- Caching system for improved performance
+- SEO enhancements with canonical and alternate links
+- Comprehensive test suite
+- PSR-4 autoloader and Composer support
+
+### Changed
+- Removed `.md` disallow rule from robots.txt
+- Enhanced SEO handling with bidirectional linking
+
+### Fixed
+- Trailing slash handling in rewrite rules
+- Null converter error in class-rewrite.php 
