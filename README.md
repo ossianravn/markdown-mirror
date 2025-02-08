@@ -1,6 +1,6 @@
 # Markdown Mirror (llms.txt) WordPress Plugin
 
-**Version:** 0.1.0  
+**Version:** 0.2.0  
 **Author:** Ossian Ravn Engmark (hello@ossianravn.dev)
 **License:** GPL v2 or later  
 **Requires WordPress:** 5.0+  
@@ -69,7 +69,7 @@ Key benefits include:
 ### User Installation
 
 1. **Download & Upload:**
-   - Option 1: Download the [latest release zip file](https://github.com/ossianravn/markdown-mirror/raw/main/dist/markdown-mirror-0.1.0.zip) directly
+   - Option 1: Download the [latest release zip file](https://github.com/ossianravn/markdown-mirror/raw/main/dist/markdown-mirror-0.2.0.zip) directly
    - Option 2: Upload the entire `markdown-mirror` folder to your `/wp-content/plugins/` directory manually
 
 2. **Activate the Plugin:**  
@@ -298,6 +298,13 @@ This will install the HTML-to-Markdown library and any other required packages. 
 ---
 
 ## 13. Changelog
+
+### 0.2.0
+- Added support for Markdown versions of taxonomy archive pages
+- Added category and tag archives as optional content types in settings
+- Implemented Markdown generation for taxonomy archives
+- Added SEO headers and alternate links for taxonomy pages
+- Updated rewrite rules to handle taxonomy URLs
 
 ### 0.1.0 (Beta)
 - Initial beta release with core functionality
