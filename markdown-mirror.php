@@ -7,7 +7,7 @@ error_log('Markdown Mirror: Main plugin file loaded at ' . time());
  * Plugin Name: Markdown Mirror (llms.txt)
  * Plugin URI: https://github.com/ossianravn/markdown-mirror
  * Description: Dynamically converts your WordPress posts and pages into Markdown and generates a root-level llms.txt file.
- * Version: 0.2.0
+ * Version: 0.2.1
  * Author: Ossian Ravn Engmark
  * Author URI: https://ossianravn.dev
  * License: GPL v2 or later
@@ -24,7 +24,7 @@ if (!defined('WPINC')) {
 }
 
 // Define plugin constants
-define('MARKDOWN_MIRROR_VERSION', '0.2.0');
+define('MARKDOWN_MIRROR_VERSION', '0.2.1');
 define('MARKDOWN_MIRROR_FILE', __FILE__);
 define('MARKDOWN_MIRROR_PATH', plugin_dir_path(__FILE__));
 define('MARKDOWN_MIRROR_URL', plugin_dir_url(__FILE__));
@@ -96,4 +96,21 @@ function md_mirror_get_converter() {
  */
 function md_mirror_is_post_included($post) {
     return \MarkdownMirror\Admin\Meta_Box::is_post_included($post);
-} 
+}
+
+// Add filter to process Visual Composer shortcodes
+add_filter('md_mirror_pre_convert', function($content) {
+    // Check if Visual Composer is active
+    if (class_exists('WPBMap')) {
+        // Process Visual Composer shortcodes
+        WPBMap::addAllMappedShortcodes();
+        $content = do_shortcode($content);
+        
+        // Clean up any remaining shortcode-like content
+        $content = preg_replace('/\[vc_[^\]]*\]/', '', $content); // Remove any unprocessed VC shortcodes
+        $content = preg_replace('/\[\/vc_[^\]]*\]/', '', $content); // Remove any unprocessed VC closing tags
+        $content = preg_replace('/\s*=&#8221;[^"]*&#8221;/', '', $content); // Clean up encoded quotes
+        $content = preg_replace('/\s+/', ' ', $content); // Normalize whitespace
+    }
+    return $content;
+}); 

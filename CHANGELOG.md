@@ -41,3 +41,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Trailing slash handling in rewrite rules
 - Initial repository setup and documentation
+
+## [0.2.1] - 2024-03-20
+
+### Added
+- Visual Composer shortcode support with proper content rendering
+- Convenient sitemap links in the admin settings page for easy access to llms.txt, llms-ctx.txt, and llms-ctx-full.txt
+- Enhanced admin UI with direct file access buttons
+
+### Fixed
+- Improved shortcode cleanup for better Markdown output
+- Better handling of Visual Composer encoded attributes

@@ -39,6 +39,14 @@ class Settings {
             'markdown-mirror'
         );
 
+        // Add Sitemap Links Section
+        add_settings_section(
+            'md_mirror_sitemaps',
+            'Available Sitemaps',
+            [__CLASS__, 'render_sitemaps_section'],
+            'markdown-mirror'
+        );
+
         // Post Types Setting
         register_setting('markdown-mirror', 'md_mirror_post_types');
         add_settings_field(
@@ -144,6 +152,56 @@ class Settings {
     public static function render_general_section($args) {
         ?>
         <p>Configure which content types to include and how they should be presented.</p>
+        <?php
+    }
+
+    /**
+     * Render the sitemaps section
+     */
+    public static function render_sitemaps_section($args) {
+        $site_url = home_url();
+        ?>
+        <div class="md-mirror-sitemaps">
+            <style>
+                .md-mirror-sitemaps .sitemap-link {
+                    display: inline-block;
+                    background: #f0f0f1;
+                    border: 1px solid #c3c4c7;
+                    border-radius: 4px;
+                    padding: 8px 12px;
+                    margin: 5px 10px 5px 0;
+                    text-decoration: none;
+                    color: #2271b1;
+                    transition: all 0.3s ease;
+                }
+                .md-mirror-sitemaps .sitemap-link:hover {
+                    background: #fff;
+                    border-color: #2271b1;
+                }
+                .md-mirror-sitemaps .sitemap-link .dashicons {
+                    margin-right: 5px;
+                    font-size: 16px;
+                    line-height: 1.3;
+                }
+                .md-mirror-sitemaps p.description {
+                    margin-top: 10px;
+                    color: #646970;
+                }
+            </style>
+            <a href="<?php echo esc_url($site_url); ?>/llms.txt" target="_blank" class="sitemap-link">
+                <span class="dashicons dashicons-media-text"></span>llms.txt
+            </a>
+            <a href="<?php echo esc_url($site_url); ?>/llms-ctx.txt" target="_blank" class="sitemap-link">
+                <span class="dashicons dashicons-media-text"></span>llms-ctx.txt
+            </a>
+            <a href="<?php echo esc_url($site_url); ?>/llms-ctx-full.txt" target="_blank" class="sitemap-link">
+                <span class="dashicons dashicons-media-text"></span>llms-ctx-full.txt
+            </a>
+            <p class="description">
+                Click the links above to view your Markdown sitemaps. The <code>llms.txt</code> file contains basic content listing,
+                <code>llms-ctx.txt</code> provides core content without optional URLs, and <code>llms-ctx-full.txt</code> includes complete content with all referenced URLs.
+            </p>
+        </div>
         <?php
     }
 

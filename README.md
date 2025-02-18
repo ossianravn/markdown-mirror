@@ -1,6 +1,6 @@
 # Markdown Mirror (llms.txt) WordPress Plugin
 
-**Version:** 0.2.0  
+**Version:** 0.2.1  
 **Author:** Ossian Ravn Engmark (hello@ossianravn.dev)
 **License:** GPL v2 or later  
 **Requires WordPress:** 5.0+  
@@ -298,6 +298,12 @@ This will install the HTML-to-Markdown library and any other required packages. 
 ---
 
 ## 13. Changelog
+
+### 0.2.1 (Current)
+- Added Visual Composer shortcode support with proper content rendering
+- Added convenient sitemap links to the admin settings page
+- Improved admin UI with direct access to llms.txt, llms-ctx.txt, and llms-ctx-full.txt
+- Enhanced shortcode cleanup for better Markdown output
 
 ### 0.2.0 (Current)
 - Added support for Markdown versions of taxonomy archive pages
