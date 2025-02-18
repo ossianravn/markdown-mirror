@@ -69,7 +69,7 @@ Key benefits include:
 ### User Installation
 
 1. **Download & Upload:**
-   - Option 1: Download the [latest release zip file](https://github.com/ossianravn/markdown-mirror/raw/main/dist/markdown-mirror-0.2.0.zip) directly
+   - Option 1: Download the [latest release zip file](https://github.com/ossianravn/markdown-mirror/raw/main/dist/markdown-mirror-0.2.1.zip) directly
    - Option 2: Upload the entire `markdown-mirror` folder to your `/wp-content/plugins/` directory manually
 
 2. **Activate the Plugin:**  
