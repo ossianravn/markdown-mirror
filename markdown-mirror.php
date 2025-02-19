@@ -105,12 +105,15 @@ add_filter('md_mirror_pre_convert', function($content) {
         // Process Visual Composer shortcodes
         WPBMap::addAllMappedShortcodes();
         $content = do_shortcode($content);
-        
-        // Clean up any remaining shortcode-like content
-        $content = preg_replace('/\[vc_[^\]]*\]/', '', $content); // Remove any unprocessed VC shortcodes
-        $content = preg_replace('/\[\/vc_[^\]]*\]/', '', $content); // Remove any unprocessed VC closing tags
-        $content = preg_replace('/\s*=&#8221;[^"]*&#8221;/', '', $content); // Clean up encoded quotes
-        $content = preg_replace('/\s+/', ' ', $content); // Normalize whitespace
     }
+    
+    // Clean up any remaining shortcodes and their attributes
+    $content = preg_replace('/\[\/?vc_[^\]]*\]/', '', $content); // Remove VC shortcodes
+    $content = preg_replace('/\[\/?[^\]]*\]/', '', $content); // Remove any other shortcodes
+    $content = preg_replace('/\s*=&#8221;[^"]*&#8221;/', '', $content); // Clean up encoded quotes
+    $content = preg_replace('/\s*="[^"]*"/', '', $content); // Clean up regular quotes
+    $content = preg_replace('/\s+/', ' ', $content); // Normalize whitespace
+    $content = trim($content); // Trim extra whitespace
+    
     return $content;
 }); 
